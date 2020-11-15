@@ -63,5 +63,6 @@
 	<true/>
 	<key>FirebaseAppDelegateProxyEnabled</key>
     	<false/>
+
 </dict>
 </plist>

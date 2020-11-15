@@ -39,6 +39,7 @@ class Reservation {
   int branchID;
   String branchName;
   int seatIndex;
+  String price;
 
 
   Reservation({
@@ -56,7 +57,8 @@ class Reservation {
     this.isPaid,
     this.branchID,
     this.branchName,
-    this.seatIndex
+    this.seatIndex,
+    this.price
   });
 
   factory Reservation.fromJson(Map<String, dynamic> json) => _$ReservationFromJson(json);

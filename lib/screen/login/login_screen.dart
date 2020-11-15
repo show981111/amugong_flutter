@@ -167,11 +167,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 20,
                 ),
                 Center(
-                  child: Text(
-                    '아이디/비밀번호 찾기',
-                    style: TextStyle(
-                      color: AppColor.mainColor,
-                      fontSize: 18,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/password_reset');
+                    },
+                    child:Text(
+                      '비밀번호 재설정',
+                      style: TextStyle(
+                        color: AppColor.mainColor,
+                        fontSize: 18,
+                      ),
                     ),
                   ),
                 ),

@@ -22,7 +22,8 @@ Reservation _$ReservationFromJson(Map<String, dynamic> json) {
     userID: json['FK_RSRV_userID'] as String,
     branchID : json['FK_SEAT_branchID'] as int,
     branchName : json['branchName'] as String,
-    seatIndex : json['seatIndex'] as int
+    seatIndex : json['seatIndex'] as int,
+    price : json['price'] as String,
   );
 }
 
@@ -42,5 +43,6 @@ Map<String, dynamic> _$ReservationToJson(Reservation instance) =>
       'isPaid': instance.isPaid,
       'FK_SEAT_branchID' : instance.branchID,
       'branchName' : instance.branchName,
-      'seatIndex' : instance.seatIndex
+      'seatIndex' : instance.seatIndex,
+      'price' : instance.price
     };

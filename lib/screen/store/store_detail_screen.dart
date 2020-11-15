@@ -1,5 +1,6 @@
 import 'package:amugong/const/AppColor.dart';
 import 'package:amugong/model/branch.dart';
+import 'package:amugong/widget/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -24,18 +25,7 @@ class StoreDetailScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AspectRatio(
-                    aspectRatio: 1,
-                    child: Stack(
-                      children: [
-                        Image.asset(
-                          'assets/no_reserv.png',
-                          // height: deviceHeight * 0.4,
-                          fit: BoxFit.cover,
-                        ),
-                      ],
-                    ),
-                  ),
+                  CarouselImage(branchInfo : branchInfo),
                   Padding(
                     padding: const EdgeInsets.only(
                       left: 20,

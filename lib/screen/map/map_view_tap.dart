@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:amugong/const/AppColor.dart';
+import 'package:amugong/data/cached_shared_preference.dart';
 import 'package:amugong/data/locator.dart';
 import 'package:amugong/model/branch.dart';
 import 'package:amugong/network/web_client.dart';
@@ -22,6 +23,8 @@ class _MapScreenState extends State<MapScreen>{
   int locationSet = 0;
   LocationData userLocation ;
   int _stackToView = 1;
+  final CachedSharedPreference sp = locator<CachedSharedPreference>();
+
   //final Completer<WebViewController> _controller = Completer<WebViewController>();
 
   Future<void> getUserLocation() async {
@@ -87,7 +90,7 @@ class _MapScreenState extends State<MapScreen>{
             children: <Widget>[
               WebView(
                 onPageFinished: _setReady,
-                initialUrl: 'http://3.34.91.138:8000/api/map/'+'37'+'/'+'127',
+//                initialUrl: 'http://3.34.91.138:8000/api/map/'+'37'+'/'+'127',
                 javascriptMode: JavascriptMode.unrestricted,
                 javascriptChannels:
                 Set.from([
@@ -103,11 +106,15 @@ class _MapScreenState extends State<MapScreen>{
     //                            var encoding = json.encode(message.message.toString());
                         var result = json.decode(res);
                         Branch selectedBranch = Branch.fromJson(result);
-                        print(selectedBranch );
+                        Navigator.pushNamed(context, '/store_detail', arguments: selectedBranch);
+                        print(selectedBranch);
                       })
                 ]),
                 onWebViewCreated: (WebViewController w) {
                   webViewController = w;
+                  Map<String, String> headers = {"Authorization": "Bearer " + sp.getString(SharedPreferenceKey.AccessToken)};
+                  w.loadUrl('http://3.34.91.138:8000/api/map/'+'37'+'/'+'127', headers: headers);
+
                 },
               ),
               Align(

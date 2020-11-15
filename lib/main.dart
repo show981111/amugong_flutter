@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:amugong/const/AppColor.dart';
 import 'package:amugong/data/locator.dart';
 import 'package:amugong/screen/map/map_view_tap.dart';
+import 'package:amugong/screen/password_reset/password_reset.dart';
 import 'package:amugong/screen/register/register_screen.dart';
+import 'package:amugong/screen/reservation/all_reservation_screen.dart';
 import 'package:amugong/screen/store/store_reservation_screen.dart';
 import 'package:amugong/screen/store/time_pick_screen.dart';
 import 'package:flutter/material.dart';
@@ -49,8 +51,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('building');
-    var userProvider = Provider.of<UserProvider>(context);
-    WebClient _webClient = locator<WebClient>();
+
     return MaterialApp(
       localizationsDelegates: [
         // ... app-specific localization delegate[s] here
@@ -72,7 +73,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: locator<CachedSharedPreference>().haveUser() ? MainScreen() : LoginScreen(),
+      home: MyHomePage(),
+//      locator<CachedSharedPreference>().haveUser() ? MainScreen() : LoginScreen(),
       // ( userProvider.user?.userID == null ?  MainScreen(): LoginScreen() )
          // : LoginScreen(),
       //_webClient.getUser() != null ? LoginScreen() :
@@ -90,6 +92,8 @@ class MyApp extends StatelessWidget {
         '/store_detail': (context) => StoreDetailScreen(),
         '/store_reservation': (context) => StoreReservationScreen(),
         '/time_pick': (context) => TimePickerScreen(),
+        '/all_reservation': (context) => AllReservationScreen(),
+        '/password_reset': (context) => ResetScreen(),
       },
     );
   }
@@ -101,8 +105,46 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  WebClient _webClient = locator<WebClient>();
+  startTime() async {
+    var _duration = new Duration(seconds: 3);
+    return new Timer(_duration, navigationPage);
+  }
+
+  Future<void> navigationPage() async {
+    //Navigator.of(context).pushReplacementNamed('/main');
+
+    if(locator<CachedSharedPreference>().haveUser() ){
+      var res;
+      try {
+         res = await _webClient.getUser();
+      }catch(e){
+        Navigator.of(context).pushReplacementNamed('/login');
+      }
+      if(res != null){
+        Navigator.of(context).pushReplacementNamed('/main');
+        return;
+      }
+    }else{
+      Navigator.of(context).pushReplacementNamed('/login');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    startTime();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: Container(
+        child : Center( child : Text(
+          'launch screen'
+        )
+        )
+      ),
+    );
   }
 }

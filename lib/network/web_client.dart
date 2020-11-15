@@ -240,14 +240,36 @@ class WebClient {
     return null;
   }
 
+  Future<String> deleteReservation({@required int num}) async {
+    Response dioResponse;
+    try {
+      dioResponse = await dio.put('reservation/${num}');
+      if (dioResponse.statusCode == 200) {
+        return "success";
+      }
+    } on DioError catch (e) {
+      print(e);
+      if (e.response.statusCode == 403) {
+        return '다시 로그인 해주세요!';
+      } else if (e.response.statusCode == 404) {
+        return '일치하는 예약내역이 없습니다!';
+      }else if (e.response.statusCode == 500) {
+        return '오류가 발생했습니다';
+      }
+    }
+    return '오류가 발생했습니다';
+  }
+
   Future<String> qrScanEnter({@required int num, @required int isKing, @required int seatID,
-                              @required String rsrv_startTime, @required String rsrv_endTime, @required String purchasedAt}) async {
+    @required String rsrv_startTime, @required String rsrv_endTime, @required String purchasedAt,
+    @required int branchID, @required String scanContent}) async {
     Response dioResponse;
     try {
       dioResponse = await dio.put(
         'visit/enter',
         data: {'num': num, 'isKing': isKing, 'seatID' : seatID,
-               'rsrv_startTime': rsrv_startTime, 'rsrv_endTime': rsrv_endTime, 'purchasedAt' : purchasedAt},
+          'rsrv_startTime': rsrv_startTime, 'rsrv_endTime': rsrv_endTime, 'purchasedAt' : purchasedAt,
+          'branchID' : branchID, 'scanContent' : scanContent},
 
       );
       if (dioResponse.statusCode == 200) {
@@ -260,12 +282,91 @@ class WebClient {
         return '다시 로그인 해주세요!';
       } else if (e.response.statusCode == 404) {
         return '일치하는 예약내역이 없습니다! 예약내역을 다시한번 확인해주세요!';
+      }else if (e.response.statusCode == 405) {
+        return '이용하시려는 지점과 예약내역이 일치하지 않습니다!!';
       }else if (e.response.statusCode == 500) {
         return '오류가 발생했습니다';
       }
     }
     return '오류가 발생했습니다';
   }
+
+  Future<String> qrScanExit({@required int num, @required int seatID, @required String rsrv_endTime ,
+    @required int branchID, @required String scanContent}) async {
+    Response dioResponse;
+    try {
+      dioResponse = await dio.put(
+        'visit/exit',
+        data: {'num': num, 'seatID' : seatID, 'rsrv_endTime': rsrv_endTime,
+              'branchID' : branchID, 'scanContent' : scanContent},
+
+      );
+      if (dioResponse.statusCode == 200) {
+        return "success";
+      }
+    } on DioError catch (e) {
+      if (e.response.statusCode == 400) {
+        return '입장가능한 시간이 아닙니다!(입장은 5분전, 30분후 까지 가능합니다)';
+      } else if (e.response.statusCode == 403) {
+        return '다시 로그인 해주세요!';
+      } else if (e.response.statusCode == 404) {
+        return '일치하는 예약내역이 없거나 이미 퇴장 처리가 되었습니다!';
+      }else if (e.response.statusCode == 405) {
+        return '이용하시려는 지점과 예약내역이 일치하지 않습니다!!';
+      }else if (e.response.statusCode == 500) {
+        return '오류가 발생했습니다';
+      }
+    }
+    return '오류가 발생했습니다';
+  }
+
+  Future<List<String>> getImageKeyList({@required int branchID}) async {
+    if (sp.haveUser()) {
+      final Response dioResponse = await dio.get('resources/${branchID}');
+      if (dioResponse.statusCode == 200) {
+//        print(jsonDecode(dioResponse.data));
+        var keyList = (dioResponse.data as List<dynamic>)?.cast<String>();
+//        print('tes');
+        print(keyList);
+        if (keyList != null) {
+          return keyList;
+        }
+//        return dioResponse.data;
+      } else if(dioResponse.statusCode == 403){
+        throw ("Forbidden");
+      } else{
+        throw ("Internal error");
+      }
+    }
+    return null;
+  }
+
+  Future<String> resetPassword({@required String userID, @required String userPassword}) async {
+    Response dioResponse;
+    try {
+      dioResponse = await dio.put(
+        'user/reset',
+        data: jsonEncode({'userID': userID, 'userPassword': userPassword}),
+      );
+
+      if (dioResponse.statusCode == 200) {
+        print(dioResponse.data);
+        return "success";
+      }
+    } on DioError catch (e) {
+      if (e.response.statusCode == 400) {
+        return '다시 한번 시도해주세요!';
+      } else if (e.response.statusCode == 403) {
+        return '먼저 전화번호 인증을 해주세요!';
+      } else if (e.response.statusCode == 404) {
+        return '아이디가 존재하지 않습니다. 회원가입을 해주세요!';
+      } else if (e.response.statusCode == 500) {
+        return '오류가 발생했습니다';
+      }
+    }
+    return '오류가 발생했습니다';
+  }
+
 
   Future<bool> saveToken(String token) async {
     if (token != null) {

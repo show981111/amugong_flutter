@@ -11,7 +11,7 @@ class ProfileTab extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+      padding: EdgeInsets.symmetric(vertical: 50, horizontal: 40),
       color: AppColor.backgroundColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,17 +61,22 @@ class ProfileTab extends StatelessWidget {
           SizedBox(
             height: 40,
           ),
-          Container(
-            width: width,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            padding: EdgeInsets.symmetric(vertical: 18, horizontal: 28),
-            margin: EdgeInsets.only(bottom: 12),
-            child: Text(
-              '구매내역',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+          InkWell(
+            onTap: () {
+              Navigator.pushNamed(context, '/all_reservation');
+            },
+            child : Container(
+              width: width,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              padding: EdgeInsets.symmetric(vertical: 18, horizontal: 28),
+              margin: EdgeInsets.only(bottom: 12),
+              child: Text(
+                '구매내역',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+              ),
             ),
           ),
           Container(

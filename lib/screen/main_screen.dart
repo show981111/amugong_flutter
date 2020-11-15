@@ -19,8 +19,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin{
   final List<MyTabs> _tabs = [
     new MyTabs(isSearch: true,isMap: false ),
     new MyTabs(isSearch: false,isMap: true ),
-    new MyTabs(isSearch: false,isMap: false ),
-    new MyTabs(isSearch: false,isMap: false ),
+    new MyTabs(isSearch: false,isMap: true ),
+    new MyTabs(isSearch: false,isMap: true ),
   ];
   MyTabs _myHandler ;
   TabController _controller ;
