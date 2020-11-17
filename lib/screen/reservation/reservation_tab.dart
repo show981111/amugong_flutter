@@ -5,6 +5,7 @@ import 'package:amugong/network/web_client.dart';
 import 'package:amugong/widget/showOneButtonDialog.dart';
 import 'package:amugong/widget/showTwoButtonDialog.dart';
 import 'package:barcode_scan/platform_wrapper.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -91,10 +92,12 @@ class _ReservationTabState extends State<ReservationTab> {
                 child: CircularProgressIndicator(),
               );
             }else if(snapshot.hasError){
-              print(snapshot.error);
-              print('error occur');
+              DioError dioError = snapshot.error;
+              print(dioError.response.statusMessage);
+              String res = '오류가 발생하였습니다!';
+              if(dioError.response.statusCode == 403) res = '인증서가 만료되었습니다! 재로그인후 이용해주세요!';
               return Container(
-                child: Text('error'),
+                child: Text(res),
               );
             }else{
               _myReservationList = snapshot.data;

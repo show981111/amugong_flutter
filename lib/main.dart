@@ -10,7 +10,6 @@ import 'package:amugong/screen/store/store_reservation_screen.dart';
 import 'package:amugong/screen/store/time_pick_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'data/cached_shared_preference.dart';
@@ -53,17 +52,6 @@ class MyApp extends StatelessWidget {
     print('building');
 
     return MaterialApp(
-      localizationsDelegates: [
-        // ... app-specific localization delegate[s] here
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: [
-        const Locale('en', 'US'),
-        const Locale('ko', 'Korea'),
-        // ... other locales the app supports
-      ],
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(

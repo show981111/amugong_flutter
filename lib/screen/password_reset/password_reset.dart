@@ -13,6 +13,10 @@ class _ResetScreenState extends State<ResetScreen> {
   TextEditingController phoneNumberController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
   TextEditingController pwCheckController = new TextEditingController();
+  TextEditingController codeController = new TextEditingController();
+
+  bool isSent = false;
+  bool isVerified = false;
 
   @override
   void dispose() {
@@ -21,6 +25,7 @@ class _ResetScreenState extends State<ResetScreen> {
     phoneNumberController.dispose();
     passwordController.dispose();
     pwCheckController.dispose();
+    codeController.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -73,7 +78,7 @@ class _ResetScreenState extends State<ResetScreen> {
                   ),
                   FlatButton(
                       child: Container(
-                        padding: EdgeInsets.all(10),
+                        padding: EdgeInsets.all(7),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
@@ -88,7 +93,10 @@ class _ResetScreenState extends State<ResetScreen> {
                       onPressed: () async {
                         final String res = await _webClient.verifyPhone(userID: phoneNumberController.text);
                         if(res == "success"){
-                          showMyDialog(context, '카카오톡으로 인증링크가 전송되었습니다! 요휴기간은 3분입니다!');
+                          setState(() {
+                            isSent = true;
+                          });
+                          showMyDialog(context, '문자로 인증코드가 전송되었습니다! 요휴기간은 3분입니다!');
                         }else{
                           showMyDialog(context, res);
                         }
@@ -98,21 +106,68 @@ class _ResetScreenState extends State<ResetScreen> {
               SizedBox(
                 height: 10,
               ),
-              TextFormField(
-                controller: passwordController,
-                keyboardType: TextInputType.visiblePassword,
-                decoration: InputDecoration(
-                  hintText: '비밀번호',
+              Visibility(
+                visible : isSent,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: codeController,
+                        keyboardType: TextInputType.phone,
+                        decoration: InputDecoration(
+                          hintText: '인증번호',
+                        ),
+                      ),
+                    ),
+                    FlatButton(
+                        child: Container(
+                          padding: EdgeInsets.all(7),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: Colors.grey,
+                              )),
+                          child: Text(
+                            '인증확인',
+                          ),
+                        ),
+                        textColor: AppColor.mainColor,
+                        color: Colors.white,
+                        onPressed: () async {
+                          final String res = await _webClient.verifyCode(userID: phoneNumberController.text, code: codeController.text);
+                          if(res == "success"){
+                            setState(() {
+                              isVerified = true;
+                            });
+                            showMyDialog(context, '인증에 성공하였습니다!');
+                          }else{
+                            showMyDialog(context, res);
+                          }
+                        }),
+                  ],
                 ),
+              ),
+              Visibility(
+                visible: isVerified,
+                child : TextFormField(
+                  controller: passwordController,
+                  keyboardType: TextInputType.visiblePassword,
+                  decoration: InputDecoration(
+                    hintText: '비밀번호',
+                  ),
+                )
               ),
               SizedBox(
                 height: 10,
               ),
-              TextFormField(
-                controller: pwCheckController,
-                keyboardType: TextInputType.visiblePassword,
-                decoration: InputDecoration(
-                  hintText: '비밀번호 확인',
+            Visibility(
+              visible: isVerified,
+              child : TextFormField(
+                  controller: pwCheckController,
+                  keyboardType: TextInputType.visiblePassword,
+                  decoration: InputDecoration(
+                    hintText: '비밀번호 확인',
+                  ),
                 ),
               ),
               SizedBox(

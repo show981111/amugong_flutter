@@ -39,7 +39,7 @@ class Reservation {
   int branchID;
   String branchName;
   int seatIndex;
-  String price;
+  int price;
 
 
   Reservation({

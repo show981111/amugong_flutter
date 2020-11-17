@@ -38,7 +38,9 @@ class ProfileTab extends StatelessWidget {
                     width: 10,
                   ),
                   Text(
-                      '${Provider.of<UserProvider>(context).user?.name}',
+                      Provider.of<UserProvider>(context).user?.name == null ?
+                        '로그인을 해주세요!'
+                      :'${Provider.of<UserProvider>(context).user?.name}',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,

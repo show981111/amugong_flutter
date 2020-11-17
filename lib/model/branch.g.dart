@@ -26,7 +26,8 @@ Branch _$BranchFromJson(Map<String, dynamic> json) {
     light: json['light'] as String,
     amenity: json['amenity'] as String,
     base: json['base'] as String,
-    hashTag: json['hashTag'] as String
+    hashTag: json['hashTag'] as String,
+    price: json['price'] as int
   );
 }
 
@@ -46,4 +47,5 @@ Map<String, dynamic> _$BranchToJson(Branch instance) => <String, dynamic>{
       'amenity': instance.amenity,
       'base': instance.base,
       'hashTag': instance.hashTag,
+      'price': instance.price
     };

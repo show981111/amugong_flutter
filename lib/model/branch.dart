@@ -20,6 +20,7 @@ class Branch {
   String base;
   String hashTag;
   List<BusinessHour> businessHour;
+  int price;
 
   Branch({
     this.address,
@@ -37,6 +38,7 @@ class Branch {
     this.amenity,
     this.base,
     this.hashTag,
+    this.price
   });
 
   factory Branch.fromJson(Map<String, dynamic> json) => _$BranchFromJson(json);

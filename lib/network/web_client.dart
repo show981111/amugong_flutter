@@ -126,6 +126,33 @@ class WebClient {
     return '인증번호 전송 실패했습니다. 다시 한번 시도해주세요!';
   }
 
+  Future<String> verifyCode({@required String userID,@required String code}) async {
+    Response dioResponse;
+    try {
+      dioResponse = await dio.post(
+        'auth/phone/verify',
+        data: {'userID': userID, 'code' : code},
+      );
+
+      if (dioResponse.statusCode == 200) {
+        return "success";
+      }
+    } on DioError catch (e) {
+
+      if (e.response.statusCode == 400) {
+        return '올바른 전화번호/비밀번호 형식을 입력해주세요';
+      }else if (e.response.statusCode == 403) {
+        return '인증 유효 기간이 만료되었습니다!';
+      }else if (e.response.statusCode == 404) {
+        return '코드가 올바르지 않습니다!';
+      }else if (e.response.statusCode == 500) {
+        return '오류가 발생했습니다';
+      }
+
+    }
+    return '오류가 발생했습니다. 다시 한번 시도해주세요!';
+  }
+
   Future<bool> logOut() async {
     print("log out !");
     if (sp.haveUser()) {
@@ -197,12 +224,12 @@ class WebClient {
 
   }
 
-  Future<String> reserveSeat({@required int seatID, @required String startTime, @required String endTime}) async {
+  Future<String> reserveSeat({@required int seatID, @required String startTime, @required String endTime, @required int price}) async {
     Response dioResponse;
     try {
       dioResponse = await dio.post(
         'reservation/seat',
-        data: jsonEncode({'seatID': seatID, 'startTime': startTime, 'endTime' : endTime}),
+        data: jsonEncode({'seatID': seatID, 'startTime': startTime, 'endTime' : endTime, 'price' : price}),
       );
 
       if (dioResponse.statusCode == 200) {
@@ -210,8 +237,13 @@ class WebClient {
         return "success";
       }
     } on DioError catch (e) {
+      print(e.response.data.toString());
       if (e.response.statusCode == 404) {
-        return '예약이 불가능한 시간대입니다!';
+        if(e.response.data.toString() == 'filled'){
+          return '이미 예약된 좌석입니다!';
+        }else{
+          return '예약이 불가능한 시간대입니다!';
+        }
       } else if (e.response.statusCode == 400) {
         return '다시한번 시도해주세요!';
       } else if (e.response.statusCode == 403) {
@@ -252,7 +284,7 @@ class WebClient {
       if (e.response.statusCode == 403) {
         return '다시 로그인 해주세요!';
       } else if (e.response.statusCode == 404) {
-        return '일치하는 예약내역이 없습니다!';
+        return '예약취소는 예약 시작시간 기준 30분 후까지만 가능합니다!';
       }else if (e.response.statusCode == 500) {
         return '오류가 발생했습니다';
       }

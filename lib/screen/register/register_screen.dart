@@ -11,9 +11,12 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController phoneNumberController = new TextEditingController();
+  TextEditingController codeController = new TextEditingController();
   TextEditingController nameController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
   TextEditingController pwCheckController = new TextEditingController();
+  bool isVerified = false;
+  bool isSent = false;
 
   @override
   void dispose() {
@@ -23,6 +26,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     nameController.dispose();
     passwordController.dispose();
     pwCheckController.dispose();
+    codeController.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -69,13 +73,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       controller: phoneNumberController,
                       keyboardType: TextInputType.phone,
                       decoration: InputDecoration(
-                        hintText: '휴대폰 번호',
+                        hintText: '휴대폰 번호(ex 01011112222)',
                       ),
                     ),
                   ),
                   FlatButton(
                       child: Container(
-                        padding: EdgeInsets.all(10),
+                        padding: EdgeInsets.all(7),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
@@ -90,7 +94,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       onPressed: () async {
                         final String res = await _webClient.verifyPhone(userID: phoneNumberController.text);
                         if(res == "success"){
-                          showMyDialog(context, '카카오톡으로 인증링크가 전송되었습니다! 요휴기간은 3분입니다!');
+                          setState(() {
+                            isSent = true;
+                          });
+                          showMyDialog(context, '문자로 인증번호가 전송되었습니다! 유효기간은 3분입니다!');
                         }else{
                           showMyDialog(context, res);
                         }
@@ -100,28 +107,77 @@ class _RegisterScreenState extends State<RegisterScreen> {
               SizedBox(
                 height: 10,
               ),
-              TextFormField(
-                controller: passwordController,
-                keyboardType: TextInputType.visiblePassword,
-                decoration: InputDecoration(
-                  hintText: '비밀번호',
+              Visibility(visible : isSent,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: codeController,
+                        keyboardType: TextInputType.phone,
+                        decoration: InputDecoration(
+                          hintText: '인증번호',
+                        ),
+                      ),
+                    ),
+                    FlatButton(
+                        child: Container(
+                          padding: EdgeInsets.all(7),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: Colors.grey,
+                              )),
+                          child: Text(
+                            '인증확인',
+                          ),
+                        ),
+                        textColor: AppColor.mainColor,
+                        color: Colors.white,
+                        onPressed: () async {
+                          final String res = await _webClient.verifyCode(userID: phoneNumberController.text, code: codeController.text);
+                          if(res == "success"){
+                            setState(() {
+                              isVerified = true;
+                            });
+                            showMyDialog(context, '인증에 성공하였습니다! 회원가입을 진행해주세요!');
+                          }else{
+                            showMyDialog(context, res);
+                          }
+                        }),
+                  ],
                 ),
+              ),
+              Visibility(
+                visible: isVerified,
+                child: TextFormField(
+                  controller: passwordController,
+                  keyboardType: TextInputType.visiblePassword,
+                  decoration: InputDecoration(
+                    hintText: '비밀번호',
+                  ),
+                )
               ),
               SizedBox(
                 height: 10,
               ),
-              TextFormField(
-                controller: pwCheckController,
-                keyboardType: TextInputType.visiblePassword,
-                decoration: InputDecoration(
-                  hintText: '비밀번호 확인',
-                ),
+              Visibility(
+                visible: isVerified,
+                child: TextFormField(
+                    controller: pwCheckController,
+                    keyboardType: TextInputType.visiblePassword,
+                    decoration: InputDecoration(
+                      hintText: '비밀번호 확인',
+                    ),
+                  ),
               ),
-              TextFormField(
-                controller: nameController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  hintText: '이름',
+              Visibility(
+                visible: isVerified,
+                child : TextFormField(
+                  controller: nameController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    hintText: '이름',
+                  ),
                 ),
               ),
               SizedBox(

@@ -4,6 +4,7 @@ import 'package:amugong/data/user_provider.dart';
 import 'package:amugong/model/branch.dart';
 import 'package:amugong/network/web_client.dart';
 import 'package:amugong/widget/store_card.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class HomeTab extends StatefulWidget {
@@ -36,8 +37,10 @@ class _HomeTabState extends State<HomeTab> {
                 child: CircularProgressIndicator(),
               );
             }else if(snapshot.hasError){
+              DioError dioError = snapshot.error;
+              print(dioError.response.statusMessage);
               String res = '오류가 발생하였습니다!';
-              if(snapshot.error == 'Forbidden') res = '인증서가 만료되었습니다! 재로그인후 이용해주세요!';
+              if(dioError.response.statusCode == 403) res = '인증서가 만료되었습니다! 재로그인후 이용해주세요!';
               return Container(
                 child: Text(res),
               );

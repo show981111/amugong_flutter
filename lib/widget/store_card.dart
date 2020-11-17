@@ -64,7 +64,7 @@ class StoreCard extends StatelessWidget {
                         branchInfo.branchName,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                          fontSize: 20,
                         ),
                       ),
                       IconButton(
@@ -81,9 +81,19 @@ class StoreCard extends StatelessWidget {
                         branchInfo.hashTag,
                         style: TextStyle(
                           fontWeight: FontWeight.w300,
-                          fontSize: 14,
+                          fontSize: 15,
                         ),
                       ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 10),
+                        child : Text(
+                          '${branchInfo.price}원 / 1h',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ],

@@ -313,20 +313,30 @@ class _StoreReservationScreenState extends State<StoreReservationScreen> {
                 child: InkWell(
                   onTap: () async {
                     if(startDateTime != null && startDateTime.length == 16 && startDateTime != null && startDateTime.length == 16 && checkedSeatNum != -1) {
+                      DateTime st = DateTime.parse(startDateTime);
+                      DateTime end = DateTime.parse(endDateTime);
+                      final difference = end.difference(st).inMinutes;
+                      print(difference);
+
+                      int price = (branchInfo.price * difference/60).round();
+
+                      print(branchInfo.price);
                       String message = '${branchInfo
-                          .branchName}에서 ${checkedSeatNum}번 좌석 ${startDateTime} ~ ${endDateTime} 으로 예약하시겠습니까?';
+                          .branchName}에서 ${checkedSeatNum}번 좌석 ${startDateTime} ~ ${endDateTime} 으로 예약하시겠습니까?\n 이용요금 ${price}원';
                       final result = await showTwoButtonDialog(
                           context, message);
                       if (result == 'ok') {
                         print(seatList[checkedSeatNum].seatID);
                         String res = await _webClient.reserveSeat(
-                            seatID: seatList[checkedSeatNum].seatID,
-                            startTime: startDateTime,
-                            endTime: endDateTime);
+                          seatID: seatList[checkedSeatNum].seatID,
+                          startTime: startDateTime,
+                          endTime: endDateTime,
+                          price: 1500
+                        );
                         if (res.toString() == 'success') {
                           showMyDialog(context, '성공적으로 예약하였습니다!').then((value) {
                             setState(() {
-                              seatList[checkedSeatNum].userID = "myself";
+                              seatList[checkedSeatNum].userID = "";
                               seatList[checkedSeatNum].startTime =
                                   startDateTime;
                               seatList[checkedSeatNum].endTime = endDateTime;

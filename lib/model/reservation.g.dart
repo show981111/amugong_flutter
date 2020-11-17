@@ -23,7 +23,7 @@ Reservation _$ReservationFromJson(Map<String, dynamic> json) {
     branchID : json['FK_SEAT_branchID'] as int,
     branchName : json['branchName'] as String,
     seatIndex : json['seatIndex'] as int,
-    price : json['price'] as String,
+    price : json['price'] as int,
   );
 }
 

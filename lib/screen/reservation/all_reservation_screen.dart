@@ -165,6 +165,7 @@ class _AllReservationScreenState extends State<AllReservationScreen> {
                     child : Text(
                       usedTimeString(rsrvList[index].startTime, rsrvList[index].endTime, '예약 시간'),
                       style: TextStyle(
+                        decoration: rsrvList[index].status == 0 ? TextDecoration.lineThrough : null,
                         color: Colors.grey,
                         fontSize: 13,
 //                        fontWeight:FontWeight.w600,

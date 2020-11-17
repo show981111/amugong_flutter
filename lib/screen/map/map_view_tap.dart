@@ -6,6 +6,7 @@ import 'package:amugong/model/branch.dart';
 import 'package:amugong/network/web_client.dart';
 import 'package:amugong/widget/store_card_horizontal.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -131,8 +132,11 @@ class _MapScreenState extends State<MapScreen>{
                                 child: CircularProgressIndicator(),
                               );
                             }else if(snapshot.hasError){
+                              DioError dioError = snapshot.error;
+                              String res = '오류가 발생하였습니다!';
+                              if(dioError.response.statusCode == 403) res = '인증서가 만료되었습니다! 재로그인후 이용해주세요!';
                               return Container(
-                                child: Text('error'),
+                                child: Text(res),
                               );
                             }else{
                               branchList = snapshot.data;
