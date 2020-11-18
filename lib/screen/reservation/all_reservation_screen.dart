@@ -102,12 +102,12 @@ class _AllReservationScreenState extends State<AllReservationScreen> {
           )
           ),
           Positioned(
-            top: 0,
+            top: deviceHeight * 0.08,
             right: 0,
             child:Image.asset(
-              'assets/allReservationIcon.png',
-              scale: 1,
-              fit : BoxFit.fitWidth,
+              'assets/allReservationListIcon.png',
+              scale: 1.3,
+              fit : BoxFit.fill,
             )
           ),
         ],

@@ -6,7 +6,8 @@ Future<void> showMyDialog(BuildContext context, String message) async {
     barrierDismissible: true, // user dont have button!
     builder: (BuildContext context) {
       return AlertDialog(
-        content: SingleChildScrollView(
+        content:
+        SingleChildScrollView(
           child: Text(
               message
           ),

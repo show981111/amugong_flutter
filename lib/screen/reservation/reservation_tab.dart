@@ -153,7 +153,16 @@ class _ReservationTabState extends State<ReservationTab> {
                             padding: EdgeInsets.only(right: 13),
                             child : InkWell(
                               onTap : () async {
-                                String res = await showTwoButtonDialog(context, '${rsrvList[index].branchName}의 ${rsrvList[index].startTime}에 예약을 취소하시겠습니까? ');
+                                String res = await showTwoButtonDialog(context, '${rsrvList[index].branchName}의 ${rsrvList[index].startTime}에 예약을 취소하시겠습니까?',
+                                imageContainer: Container(
+                                  width : 60,
+                                  height: 60,
+                                  child: Image.asset(
+                                    'assets/cancelReservation.png',
+                                    scale: 1,
+                                    fit : BoxFit.cover,
+                                  ),
+                                ));
                                 if(res == 'ok') {
                                   String result = await _webClient.deleteReservation(
                                       num: rsrvList[index].reservationNum);

@@ -2,6 +2,7 @@ import 'package:amugong/const/AppColor.dart';
 import 'package:amugong/screen/store/store_reservation_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class TimePickerScreen extends StatefulWidget {
   String startTime = "";
@@ -14,7 +15,25 @@ class TimePickerScreen extends StatefulWidget {
 }
 
 class _TimePickerScreenState extends State<TimePickerScreen> {
-
+  List<Text> times = List<Text>();
+  List<Text> minutes = [Text('00'),Text('30')];
+  int initialHourIndex;
+  String selectedStartHour;
+  String selectedStartMin ;
+  String selectedEndHour;
+  String selectedEndMin ;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    makeTimeList();
+    initialHourIndex = DateTime.now().hour;
+    print(DateTime.now().hour);
+    selectedStartHour = times[initialHourIndex].data;
+    selectedStartMin = '00';
+    selectedEndHour = times[initialHourIndex].data;
+    selectedEndMin = '00';
+  }
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -37,7 +56,7 @@ class _TimePickerScreenState extends State<TimePickerScreen> {
       body: SingleChildScrollView(
         child: Container(
           width: width,
-          padding: EdgeInsets.fromLTRB(30, 30, 30, 0),
+          padding: EdgeInsets.fromLTRB(30, 20, 30, 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -59,38 +78,51 @@ class _TimePickerScreenState extends State<TimePickerScreen> {
                 ),
               ),
               SizedBox(height: 10),
-              InkWell(
-                onTap: (){
-                  widget.selectedTime = "";
-                  showModalBottomSheet(
-                      context: context,
-                      builder: (BuildContext builder)
-                      {
-                        return TimePicker(0);
-                      },
-                    );
-                },
-                child :
-                  Container(
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(blurRadius: 4, color: Colors.grey, offset: Offset(3, 3)),
-                      ],
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    width: width,
-                    height: 60,
-                    child: Center(
-                      child: Text(
-                        widget.startTime == "" ? '시간 선택' : widget.startTime,
-                        style: TextStyle(
-                          fontSize: 23,
-                          fontWeight: FontWeight.w800,
+              Container(
+                  width: double.infinity,
+                  height: 70,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+  //                      width: ,
+                        child:
+                        CupertinoPicker(
+                          scrollController: FixedExtentScrollController(initialItem: initialHourIndex),
+                          itemExtent: 40.0,
+                          onSelectedItemChanged: (index) {
+                            setState(() {
+                              selectedStartHour = times[index].data;
+                            });
+                          },
+                          children:times,
                         ),
                       ),
-                    ),
-                ),
+                      Text(
+                        '시',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      Expanded(
+                        child:
+                        CupertinoPicker(
+                          scrollController: FixedExtentScrollController(initialItem: 0),
+                          itemExtent: 40.0,
+                          onSelectedItemChanged: (index) {
+                            print(index);
+                            setState(() {
+                              selectedStartMin = minutes[index].data;
+                            });
+                          },
+                          children: minutes,
+                        ),
+                      ),
+                      Text(
+                        '분',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ],
+                  )
               ),
               SizedBox(height: 15),
 
@@ -102,37 +134,50 @@ class _TimePickerScreenState extends State<TimePickerScreen> {
                 ),
               ),
               SizedBox(height: 10),
-              InkWell(
-                onTap: (){
-                  widget.selectedTime = "";
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext builder)
-                  {
-                    return TimePicker(1);
-                  });
-                },
-                child :
-                Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(blurRadius: 4, color: Colors.grey, offset: Offset(3, 3)),
-                    ],
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  width: width,
-                  height: 60,
-                  child: Center(
-                    child: Text(
-                      widget.endTime == "" ? '시간 선택' : widget.endTime,
-                      style: TextStyle(
-                        fontSize: 23,
-                        fontWeight: FontWeight.w800,
+              Container(
+                  width: double.infinity,
+                  height: 70,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+    //                      width: ,
+                        child:
+                        CupertinoPicker(
+                          scrollController: FixedExtentScrollController(initialItem: initialHourIndex),
+                          itemExtent: 40.0,
+                          onSelectedItemChanged: (index) {
+                            setState(() {
+                              selectedEndHour = times[index].data;
+                            });
+                          },
+                          children:times,
+                        ),
                       ),
-                    ),
-                  ),
-                ),
+                      Text(
+                        '시',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      Expanded(
+                        child:
+                        CupertinoPicker(
+                          itemExtent: 40.0,
+                          scrollController: FixedExtentScrollController(initialItem: 0),
+                          onSelectedItemChanged: (index) {
+                            setState(() {
+                              selectedEndMin = minutes[index].data;
+                            });
+                          },
+                          children: minutes,
+                        ),
+                      ),
+                      Text(
+                        '분',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ],
+                  )
               ),
               Align(
                 heightFactor: 3,
@@ -155,12 +200,8 @@ class _TimePickerScreenState extends State<TimePickerScreen> {
                       child: InkWell(
                         onTap: (){
                           List<String> result = new List<String>();
-
-                          if(widget.startTime !=null && widget.endTime != null &&
-                              widget.startTime.isNotEmpty && widget.endTime.isNotEmpty){
-                            result.add(widget.startTime );
-                            result.add(widget.endTime );
-                          }
+                          result.add('${selectedStartHour}:${selectedStartMin}');
+                          result.add('${selectedEndHour}:${selectedEndMin}');
                           Navigator.pop(context, result);
                         },
 
@@ -187,83 +228,14 @@ class _TimePickerScreenState extends State<TimePickerScreen> {
     );
   }
 
-//  String _printDuration(Duration duration) {
-//    String twoDigits(int n) => n.toString().padLeft(2, "0");
-//    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-//    return "${twoDigits(duration.inHours)}:$twoDigitMinutes";
-//  }
-
-  Container TimePicker(int judge){
-    return
-      Container(
-          height: MediaQuery.of(context).copyWith().size.height / 3,
-          child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                    padding: EdgeInsets.all(15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        InkWell(
-                          onTap : (){
-                            Navigator.pop(context);
-                          },
-                          child: Container(
-                            width: 120,
-                            child :Text(
-                              "Cancel",
-                              style: TextStyle(fontSize: 15),
-                          ),
-                          )
-                        ),
-                        InkWell(
-                          onTap : (){
-                            setState(() {
-                              DateTime cur =DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day,DateTime.now().hour,0);
-                              if(judge == 0){
-                                if(widget.selectedTime == ""){
-                                  widget.startTime = printFormattedTime(cur);
-                                }else widget.startTime = widget.selectedTime;
-                              }else{
-                                if(widget.selectedTime == ""){
-                                  widget.endTime = printFormattedTime(cur);
-                                }else widget.endTime = widget.selectedTime;
-                              }
-                            });
-                            Navigator.pop(context);
-                          },
-                          child: Container(
-                            width: 120,
-                            child : Align(
-                              alignment: Alignment.centerRight,
-                              child:
-                            Text(
-                                "Ok",
-                              style: TextStyle(fontSize: 15),
-                            ),
-                            )
-                          ),
-                        )
-                      ],
-                    )
-                ),
-                Container(
-                  height: MediaQuery.of(context).copyWith().size.height / 4,
-                  child :  CupertinoDatePicker(
-                    initialDateTime: DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day,DateTime.now().hour,0),
-                    onDateTimeChanged: (DateTime newdate) {
-                      widget.selectedTime = printFormattedTime(newdate);
-                    },
-                    use24hFormat: false,
-                    minuteInterval: 30,
-                    mode: CupertinoDatePickerMode.time,
-                  )
-                )
-              ]
-          )
-      );
+  void makeTimeList(){
+    for(int i = 0; i <= 24; i++){
+      if(i < 10){
+        times.add(Text('0${i}', style: TextStyle(fontSize: 24),));
+      }else{
+        times.add(Text('${i}'));
+      }
+    }
   }
 }
 

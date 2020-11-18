@@ -50,7 +50,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('building');
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
@@ -112,6 +111,8 @@ class _MyHomePageState extends State<MyHomePage> {
       if(res != null){
         Navigator.of(context).pushReplacementNamed('/main');
         return;
+      }else{
+        Navigator.of(context).pushReplacementNamed('/login');
       }
     }else{
       Navigator.of(context).pushReplacementNamed('/login');
@@ -126,11 +127,51 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    double deviceHeight = MediaQuery.of(context).size.height;
+    double deviceWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: Container(
-        child : Center( child : Text(
-          'launch screen'
-        )
+        width: double.infinity,
+        height: double.infinity,
+        color: Color(0xff462AE0),
+        child : Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top : deviceHeight/7, left: deviceWidth/5),
+              child: Text(
+                "AMUGONG",
+                style: TextStyle(
+                  fontFamily: 'Jalnan',
+                  color: Colors.white,
+                  fontSize: 35,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 25,left: deviceWidth/5),
+              child: Text(
+                "아무데서나\n공부한다\n아무공",
+                style: TextStyle(
+                  height: 1.3,
+                  color: Colors.white,
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top : 0, left: deviceWidth/5),
+              child: Image.asset(
+                'assets/launchIcon.png',
+                scale: 1,
+                fit : BoxFit.fitWidth,
+              )
+            ),
+          ],
         )
       ),
     );

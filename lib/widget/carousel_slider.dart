@@ -25,7 +25,7 @@ class _CarouselImageState extends State<CarouselImage> {
   int _currentPage = 0;
 
   @override
-  void initState() {//상위클래스 statefulwidget에 가져온 movies 를 참조
+  void initState() {
     super.initState();
     fetchKeyList = _webClient.getImageKeyList(branchID: widget.branchInfo.branchID);
   }
@@ -36,12 +36,15 @@ class _CarouselImageState extends State<CarouselImage> {
       future: fetchKeyList,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if(snapshot.hasData == false && !snapshot.hasError){
-          return Center(
-            child: Padding(
-              padding: EdgeInsets.only(top: 40),
-              child: CircularProgressIndicator(),
-            ),
-          );
+          return Container(
+            height: MediaQuery.of(context).size.height*0.4,
+            child :
+              Center(
+              child: Padding(
+                padding: EdgeInsets.only(top: 40),
+                child: CircularProgressIndicator(),
+              ),
+          ));
         }else if(snapshot.hasError){
           print(snapshot.error);
           return Container(
@@ -51,22 +54,23 @@ class _CarouselImageState extends State<CarouselImage> {
           keyList = snapshot.data;
           return new Container(
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 CarouselSlider(
                   items: keyList.map((key){
                     return Builder(
                         builder:(BuildContext context){
                           return
-                            CachedNetworkImage(
-                              httpHeaders :{"Authorization"  : "Bearer ${sp.getString(SharedPreferenceKey.AccessToken)}"} ,
-                              fit: BoxFit.cover,
-                              imageUrl: "http://3.34.91.138:8000/api/resources/${widget.branchInfo.branchID}/${key}", //"https://picsum.photos/300/300?image=${40 + index + 1}",
-                              placeholder: (context, url) => Container(
-                                child: Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                              )
-                            );
+                              CachedNetworkImage(
+                                httpHeaders :{"Authorization"  : "Bearer ${sp.getString(SharedPreferenceKey.AccessToken)}"} ,
+                                fit: BoxFit.cover,
+                                imageUrl: "http://3.34.91.138:8000/api/resources/${widget.branchInfo.branchID}/${key}", //"https://picsum.photos/300/300?image=${40 + index + 1}",
+                                placeholder: (context, url) => Container(
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                )
+                              );
                         }
                     );
                   }).toList(),
@@ -74,6 +78,7 @@ class _CarouselImageState extends State<CarouselImage> {
                       autoPlay: false,
                       enlargeCenterPage: true,
                       viewportFraction: 1,
+//                      height: 1.3,
                       aspectRatio: 1.3,
                       enableInfiniteScroll: false,
                       initialPage: 0,
