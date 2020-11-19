@@ -320,6 +320,9 @@ class _ReservationTabState extends State<ReservationTab> {
         showMyDialog(context, result.toString());
         return false;
       }
+    }else if(barcode.type.toString() != 'Cancelled'){
+      showMyDialog(context, 'QR코드를 다시 스캔해주세요!');
+      return false;
     }
 
     //String photoScanResult = await BarcodeScanner.scan();
@@ -351,7 +354,11 @@ class _ReservationTabState extends State<ReservationTab> {
         showMyDialog(context, result.toString());
         return false;
       }
+    }else if(barcode.type.toString() != 'Cancelled'){
+      showMyDialog(context, 'QR코드를 다시 스캔해주세요!');
+      return false;
     }
+
 
     //String photoScanResult = await BarcodeScanner.scan();
     //String barcode = await scanner.scan();

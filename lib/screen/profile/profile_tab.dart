@@ -11,7 +11,7 @@ class ProfileTab extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 50, horizontal: 40),
+      padding: EdgeInsets.symmetric(vertical: height*0.08, horizontal: 40),
       color: AppColor.backgroundColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -140,13 +140,13 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.only(top : deviceHeight/7, left: deviceWidth/5),
+              padding: EdgeInsets.only(top : deviceHeight*0.15, left: deviceWidth/5),
               child: Text(
                 "AMUGONG",
                 style: TextStyle(
                   fontFamily: 'Jalnan',
                   color: Colors.white,
-                  fontSize: 35,
+                  fontSize: deviceWidth*0.1,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -158,17 +158,20 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: TextStyle(
                   height: 1.3,
                   color: Colors.white,
-                  fontSize: 25,
+                  fontSize: deviceWidth*0.07,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             Padding(
               padding: EdgeInsets.only(top : 0, left: deviceWidth/5),
-              child: Image.asset(
-                'assets/launchIcon.png',
-                scale: 1,
-                fit : BoxFit.fitWidth,
+              child: Container(
+                width: deviceWidth * 0.63 ,
+                child: Image.asset(
+                  'assets/launchIcon.png',
+//                  scale: deviceWidth*0.0028,
+                  fit : BoxFit.fill,
+                ),
               )
             ),
           ],
