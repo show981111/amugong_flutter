@@ -322,7 +322,7 @@ class _StoreReservationScreenState extends State<StoreReservationScreen> {
 
                       print(branchInfo.price);
                       String message = '${branchInfo
-                          .branchName}에서 ${checkedSeatNum}번 좌석 ${startDateTime} ~ ${endDateTime} 으로 예약하시겠습니까?\n 이용요금 ${price}원';
+                          .branchName}에서 ${checkedSeatNum}번 좌석 \n${startDateTime} ~ ${endDateTime} 으로 예약하시겠습니까?\n이용요금 ${price}원';
                       final result = await showTwoButtonDialog(
                           context, message);
                       if (result == 'ok') {

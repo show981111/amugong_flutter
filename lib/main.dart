@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:amugong/const/AppColor.dart';
 import 'package:amugong/data/locator.dart';
+import 'package:amugong/screen/guide/guide_screen.dart';
 import 'package:amugong/screen/map/map_view_tap.dart';
 import 'package:amugong/screen/password_reset/password_reset.dart';
 import 'package:amugong/screen/register/register_screen.dart';
@@ -81,6 +82,7 @@ class MyApp extends StatelessWidget {
         '/time_pick': (context) => TimePickerScreen(),
         '/all_reservation': (context) => AllReservationScreen(),
         '/password_reset': (context) => ResetScreen(),
+        '/guide': (context) => GuideScreen(),
       },
     );
   }

@@ -158,7 +158,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 )
               ),
               SizedBox(
-                height: 10,
+                height: 4,
               ),
               Visibility(
                 visible: isVerified,

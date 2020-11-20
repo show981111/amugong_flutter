@@ -61,16 +61,21 @@ class _HomeTabState extends State<HomeTab> {
                     SizedBox(
                       height: 10,
                     ),
-                    Container(
-                      height: height*0.1,
-                      width: width-50,
-                      child: CachedNetworkImage(
-                        httpHeaders :{"Authorization"  : "Bearer ${sp.getString(SharedPreferenceKey.AccessToken)}"} ,
-                        fit: BoxFit.fill,
-                        imageUrl: "http://3.34.91.138:8000/api/resources/0/ad.png", //"https://picsum.photos/300/300?image=${40 + index + 1}",
-                        placeholder: (context, url) => Container(
-                          child: Center(
-                            child: CircularProgressIndicator(),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/guide');
+                      },
+                      child: Container(
+                        height: height*0.13,
+                        width: width-50,
+                        child: CachedNetworkImage(
+                          httpHeaders :{"Authorization"  : "Bearer ${sp.getString(SharedPreferenceKey.AccessToken)}"} ,
+                          fit: BoxFit.fill,
+                          imageUrl: "http://3.34.91.138:8000/api/resources/0/ad.png", //"https://picsum.photos/300/300?image=${40 + index + 1}",
+                          placeholder: (context, url) => Container(
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
                           ),
                         ),
                       ),

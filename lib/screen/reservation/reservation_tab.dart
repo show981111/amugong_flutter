@@ -34,7 +34,7 @@ class _ReservationTabState extends State<ReservationTab> {
     return
       Container(
           padding: EdgeInsets.symmetric(
-            vertical: 50,
+            vertical: 60,
           ),
           color: AppColor.backgroundColor,
           child :
@@ -153,7 +153,7 @@ class _ReservationTabState extends State<ReservationTab> {
                             padding: EdgeInsets.only(right: 13),
                             child : InkWell(
                               onTap : () async {
-                                String res = await showTwoButtonDialog(context, '${rsrvList[index].branchName}의 ${rsrvList[index].startTime}에 예약을 취소하시겠습니까?',
+                                String res = await showTwoButtonDialog(context, '${rsrvList[index].branchName}의 ${rsrvList[index].startTime} \n예약을 취소하시겠습니까?',
                                 imageContainer: Container(
                                   width : 60,
                                   height: 60,
@@ -382,19 +382,24 @@ class _ReservationTabState extends State<ReservationTab> {
         SizedBox(
           height: 20,
         ),
-        Container(
-          decoration: BoxDecoration(
-            color: AppColor.mainColor,
-            borderRadius: BorderRadius.circular(30),
-          ),
-          width: 200,
-          height: 50,
-          child: Center(
-            child: Text(
-              '이용방법',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
+        InkWell(
+          onTap : (){
+            Navigator.pushNamed(context, '/guide');
+          },
+          child : Container(
+            decoration: BoxDecoration(
+              color: AppColor.mainColor,
+              borderRadius: BorderRadius.circular(30),
+            ),
+            width: 200,
+            height: 50,
+            child: Center(
+              child: Text(
+                '이용방법',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
               ),
             ),
           ),
@@ -410,7 +415,7 @@ class _ReservationTabState extends State<ReservationTab> {
           'assets/no_reserv.png',
           scale: 2,
           fit : BoxFit.fitHeight,
-          height: height - 450,
+          height: height - 500,
         ),
       ],
     );

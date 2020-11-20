@@ -63,24 +63,10 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin{
           backgroundColor: Colors.white,
           extendBody: true,
           appBar: _myHandler.isMap ? null : AppBar(
-            actions: _myHandler.isSearch ? [
-              CircleAvatar(
-                backgroundColor: Color(0xffEDECF9),
-                child: IconButton(
-                    icon: Icon(
-                      Icons.search_rounded,
-                      color: AppColor.mainColor,
-                    ),
-                    onPressed: () {}),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-            ] : null,
-
+            titleSpacing: 25,
             elevation: 0,
             centerTitle: false,
-            toolbarHeight: height * 0.09,
+            toolbarHeight: height * 0.065,
             title: Text(
               "AMUGONG",
               style: TextStyle(
@@ -99,15 +85,15 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin{
             ),
             child: Container(
               padding: EdgeInsets.only(
-                bottom: 13,
-                top: 10,
+                bottom: height*0.035,
+                top: 5,
                 left: 6,
                 right: 6,
               ),
               color: Colors.white,
               child: TabBar(
                 controller: _controller,
-                labelPadding: EdgeInsets.all(2),
+                labelPadding: EdgeInsets.only(left: 2,top: 2,right: 2,bottom: 0),
                 indicator: BoxDecoration(
                   shape: BoxShape.circle,
                   color: AppColor.secondColor,

@@ -52,13 +52,13 @@ class StoreCard extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 18.0, right: 0),
+              padding: const EdgeInsets.only(left: 18.0, right: 0,top: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
                         branchInfo.branchName,
@@ -67,11 +67,19 @@ class StoreCard extends StatelessWidget {
                           fontSize: 20,
                         ),
                       ),
-                      IconButton(
-                        icon: Icon(Icons.add_location),
-                        iconSize: 36,
-                        onPressed: () {},
-                      )
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Image.asset(
+                        'assets/new.png',
+                        height: 17,
+                        fit: BoxFit.fitHeight,
+                      ),
+//                      IconButton(
+//                        icon: Icon(Icons.add_location),
+//                        iconSize: 36,
+//                        onPressed: () {},
+//                      )
                     ],
                   ),
                   Row(

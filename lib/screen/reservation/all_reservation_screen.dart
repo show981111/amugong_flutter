@@ -35,7 +35,7 @@ class _AllReservationScreenState extends State<AllReservationScreen> {
               height: double.infinity,
               width: double.infinity,
               padding: EdgeInsets.only(
-                top: deviceHeight * 0.13,
+                top: deviceHeight * 0.15,
               ),
               color: AppColor.backgroundColor,
               child:

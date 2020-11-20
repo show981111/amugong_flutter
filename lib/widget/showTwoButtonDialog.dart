@@ -17,6 +17,8 @@ Future<String> showTwoButtonDialog(BuildContext context, String message, {Contai
           children: [
             Text(message),
             imageContainer == null ? Container() :
+                SizedBox(height: 10,),
+            imageContainer == null ? Container() :
                 imageContainer
           ],
         ),

@@ -52,7 +52,11 @@ class _MapScreenState extends State<MapScreen>{
     userLocation = await location.getLocation();
 
   }
-
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -165,7 +169,7 @@ class _MapScreenState extends State<MapScreen>{
                       )
               ),
               Positioned.fill(
-                top: 44,
+                top: 50,
                 child: Align(
                   alignment: Alignment.topCenter,
                   child:
